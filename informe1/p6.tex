@@ -1,0 +1,26 @@
+\begin{itemize}
+    \item \begin{itemize}
+        \item \verb;using JuMP;;: Importa el módulo de JuMP
+        \item \verb;using Gurobi;: Importa el módulo de Gurobi
+        \item \verb;m=5;; Número de filas de restricciones
+        \item \verb;n=10*(m-1);; Número de variables
+        \item \verb;a = rand(1:100,m,n);; Matriz de coeficientes del sistema $Ax<=b$
+        \item \verb;mip = Model(solver=GurobiSolver());; Objeto que define al modelo, indicando el solver que se usará (Gurobi).
+        \item \verb;@variable(mip,x[1:n],Bin);; Declara una variable del modelo  $x\in\mathbb{Z}^n$.
+        \item \verb;@variable(mip,u[1:n]>=0);; Declara una variable $u$ no negativa en $\mathbb{R}^n$
+        \item \verb;@variable(mip,v[1:n]>=0);; Declara una variable $v$ no negativa en $\mathbb{R}^n$
+        \item \verb;@objective(mip,Min,sum(u)+sum(v));; Define el objetivo del problema de optimizaci\'on como la suma de las sumas de componentes de $u$ y $v$
+        \item
+        \begin{verbatim}
+        for i=1:m
+          @constraint(mip,dot(vec(a[i,:]),x)+u[i]+v[i]==floor(sum(a[i,:]/2)));
+        end
+        solve(mip);
+        \end{verbatim}
+
+
+
+        Define Las restricciones del modelo como el sistema $Ax+u+v = b$ donde %$b\in\mathbb{R}^n$ y $b_i = \floor{\sigma_{i=1}}
+
+    \end{itemize}
+\end{itemize}
